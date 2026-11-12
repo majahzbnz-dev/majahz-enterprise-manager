@@ -57,14 +57,30 @@ document.getElementById("productForm").addEventListener("submit", async function
   event.preventDefault();
 
   try {
-    await addProduct({
-      name: document.getElementById("productName").value,
-      category: document.getElementById("productCategory").value,
-      quantity: document.getElementById("productQuantity").value,
-      unit: document.getElementById("productUnit").value,
-      costPrice: document.getElementById("productCost").value,
-      sellingPrice: document.getElementById("productSelling").value
-    });
+    await 
+async function addProduct(product) {
+  if (!product.name || !product.name.trim()) {
+    throw new Error("Shigar da sunan kaya.");
+  }
+
+  const quantity = Number(product.quantity) || 0;
+  const unit = product.unit || "Bag";
+  const muduPerBag = Number(product.muduPerBag) || 21;
+
+  const record = {
+    name: product.name.trim(),
+    category: product.category || "Other",
+    quantity: quantity,
+    unit: unit,
+    muduPerBag: muduPerBag,
+    stockInMudu: unit === "Bag" ? quantity * muduPerBag : null,
+    costPrice: Number(product.costPrice) || 0,
+    sellingPrice: Number(product.sellingPrice) || 0,
+    createdAt: new Date().toISOString()
+  };
+
+  return saveRecord("products", record);
+}
 
     this.reset();
     await displayProducts();
