@@ -105,8 +105,11 @@ document.getElementById("purchaseForm").addEventListener(
       await displayPurchaseProducts();
       await displayPurchaseHistory();
       await displayProducts();
+      if (typeof updateDashboard === "function") {
+  await updateDashboard();
+}
 
-      alert(
+    alert(
         "Purchase recorded successfully!\n" +
         "New stock: " + result.newQuantity
       );
