@@ -2,11 +2,12 @@
 const CACHE_NAME = "majahz-enterprise-v4";
 
 const FILES_TO_CACHE = [
-  "./",
-  "./index.html",
-  "./manifest.json"
-  "./database.js",
-  "./product.js",
+ "./",
+"./index.html",
+"./manifest.json",
+"./database.js",
+"./products.js",
+"./sales.js"
 ];
 self.addEventListener("install", event => {
   event.waitUntil(
