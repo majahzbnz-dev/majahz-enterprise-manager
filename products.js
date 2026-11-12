@@ -4,11 +4,17 @@ async function addProduct(product) {
     throw new Error("Shigar da sunan kaya.");
   }
 
+  const quantity = Number(product.quantity) || 0;
+  const unit = product.unit || "Bag";
+  const muduPerBag = Number(product.muduPerBag) || 21;
+
   const record = {
     name: product.name.trim(),
     category: product.category || "Other",
-    quantity: Number(product.quantity) || 0,
-    unit: product.unit || "bag",
+    quantity,
+    unit,
+    muduPerBag,
+    stockInMudu: unit === "Bag" ? quantity * muduPerBag : null,
     costPrice: Number(product.costPrice) || 0,
     sellingPrice: Number(product.sellingPrice) || 0,
     createdAt: new Date().toISOString()
@@ -44,9 +50,16 @@ async function displayProducts() {
     const name = document.createElement("strong");
     name.textContent = product.name;
 
+    const mudu = product.muduPerBag || 21;
+    const totalMudu = product.stockInMudu ??
+      (product.unit === "Bag" ? product.quantity * mudu : 0);
+
     const details = document.createElement("p");
     details.textContent =
-      `${product.quantity} ${product.unit} | Cost: ₦${product.costPrice} | Selling: ₦${product.sellingPrice}`;
+      `${product.quantity} ${product.unit} | ` +
+      `Stock: ${totalMudu} Mudu | ` +
+      `Cost: ₦${product.costPrice} | ` +
+      `Selling: ₦${product.sellingPrice}`;
 
     item.append(name, details);
     list.appendChild(item);
@@ -57,32 +70,19 @@ document.getElementById("productForm").addEventListener("submit", async function
   event.preventDefault();
 
   try {
-    await 
-async function addProduct(product) {
-  if (!product.name || !product.name.trim()) {
-    throw new Error("Shigar da sunan kaya.");
-  }
-
-  const quantity = Number(product.quantity) || 0;
-  const unit = product.unit || "Bag";
-  const muduPerBag = Number(product.muduPerBag) || 21;
-
-  const record = {
-    name: product.name.trim(),
-    category: product.category || "Other",
-    quantity: quantity,
-    unit: unit,
-    muduPerBag: muduPerBag,
-    stockInMudu: unit === "Bag" ? quantity * muduPerBag : null,
-    costPrice: Number(product.costPrice) || 0,
-    sellingPrice: Number(product.sellingPrice) || 0,
-    createdAt: new Date().toISOString()
-  };
-
-  return saveRecord("products", record);
-}
+    await addProduct({
+      name: document.getElementById("productName").value,
+      category: document.getElementById("productCategory").value,
+      quantity: document.getElementById("productQuantity").value,
+      unit: document.getElementById("productUnit").value,
+      muduPerBag: document.getElementById("muduPerBag").value,
+      costPrice: document.getElementById("productCost").value,
+      sellingPrice: document.getElementById("productSelling").value
+    });
 
     this.reset();
+    document.getElementById("muduPerBag").value = 21;
+
     await displayProducts();
     alert("Product saved successfully!");
   } catch (error) {
