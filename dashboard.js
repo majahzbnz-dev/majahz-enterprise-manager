@@ -10,7 +10,6 @@ async function updateDashboard() {
     const products = await getAllRecords("products");
     const sales = await getAllRecords("sales");
     const expenses = await getAllRecords("expenses");
-    const purchases = await getAllRecords("purchases");
 
     const totalSales = sales.reduce(
       (sum, sale) => sum + (Number(sale.saleAmount) || 0), 0
@@ -33,29 +32,27 @@ async function updateDashboard() {
       );
     }, 0);
 
-    const totalPurchases = purchases.reduce(
-      (sum, purchase) => sum + (Number(purchase.totalCost) || 0), 0
-    );
-
     const values = {
       totalMoney: totalSales - totalExpenses,
+      totalProducts,
+      totalStock,
       totalSales,
       totalProfit: totalProfit - totalExpenses,
       totalExpenses,
-      totalProducts,
-      totalStock,
-      totalPurchases
+      totalOutstanding: 0
     };
 
     Object.entries(values).forEach(([key, value]) => {
       const element = document.getElementById(key);
+
       if (element) {
-        element.textContent = [
-          "totalMoney", "totalSales", "totalProfit",
-          "totalExpenses", "totalPurchases"
-        ].includes(key)
-          ? moneyFormat(value)
-          : Number(value).toLocaleString("en-NG");
+        if (key === "totalProducts") {
+          element.textContent = value.toLocaleString("en-NG");
+        } else if (key === "totalStock") {
+          element.textContent = value.toLocaleString("en-NG") + " Mudu";
+        } else {
+          element.textContent = moneyFormat(value);
+        }
       }
     });
 
