@@ -101,7 +101,28 @@
   <h3>Product List</h3>
   <div id="productList">No products added yet.</div>
 </div>
+<div class="section">
+  <h3>Sales</h3>
 
+  <form id="salesForm">
+    <label>Select Product</label>
+    <select id="saleProduct" required>
+      <option value="">Choose product</option>
+    </select>
+
+    <label>Quantity (Mudu)</label>
+    <input type="number" id="saleQuantityMudu" min="1" required>
+
+    <label>Total Sale Amount (₦)</label>
+    <input type="number" id="saleAmount" min="1" required>
+
+    <button type="submit">Record Sale</button>
+  </form>
+
+  <h4>Sales History</h4>
+  <div id="salesList"></div>
+</div>
+    
  <script src="./database.js"></script>
 <script src="./products.js"></script>
 <script src="./sales.js"></script>
