@@ -1,0 +1,123 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MAJAHZ Data Backup</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f5f2;
+      padding: 25px;
+      text-align: center;
+    }
+    .box {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      max-width: 450px;
+      margin: 40px auto;
+    }
+    button {
+      background: #123c2c;
+      color: white;
+      border: 0;
+      padding: 14px 22px;
+      border-radius: 7px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    p { line-height: 1.6; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>MAJAHZ ENTERPRISE</h2>
+    <h3>Data Backup</h3>
+    <p>This tool exports your existing business records.</p>
+    <button id="backupButton">Download My Backup</button>
+    <p id="status">Ready to create backup.</p>
+  </div>
+
+  <script>
+    const DB_NAME = "MAJAHZ_ENTERPRISE_DB";
+    const STORES = [
+      "products",
+      "sales",
+      "purchases",
+      "expenses",
+      "debts",
+      "deliveries"
+    ];
+
+    document.getElementById("backupButton")
+      .addEventListener("click", async () => {
+        const status = document.getElementById("status");
+        const button = document.getElementById("backupButton");
+
+        button.disabled = true;
+        status.textContent = "Preparing backup...";
+
+        let db;
+
+        try {
+          db = await new Promise((resolve, reject) => {
+            const request = indexedDB.open(DB_NAME);
+            request.onsuccess = () => resolve(request.result);
+            request.onerror = () => reject(request.error);
+          });
+
+          const backup = {
+            database: DB_NAME,
+            createdAt: new Date().toISOString(),
+            version: db.version,
+            records: {}
+          };
+
+          const availableStores = STORES.filter(
+            name => db.objectStoreNames.contains(name)
+          );
+
+          const transaction = db.transaction(
+            availableStores, "readonly"
+          );
+
+          await Promise.all(availableStores.map(name =>
+            new Promise((resolve, reject) => {
+              const request = transaction.objectStore(name).getAll();
+              request.onsuccess = () => {
+                backup.records[name] = request.result;
+                resolve();
+              };
+              request.onerror = () => reject(request.error);
+            })
+          ));
+
+          const blob = new Blob(
+            [JSON.stringify(backup, null, 2)],
+            { type: "application/json" }
+          );
+
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.href = url;
+          link.download = "MAJAHZ-BACKUP-" +
+            new Date().toISOString().slice(0, 10) + ".json";
+          link.click();
+
+          URL.revokeObjectURL(url);
+
+          status.textContent =
+            "Backup created. Keep the downloaded file safe!";
+
+        } catch (error) {
+          status.textContent = "Backup failed: " + error.message;
+        } finally {
+          if (db) db.close();
+          button.disabled = false;
+        }
+      });
+  </script>
+</body>
+</html>
