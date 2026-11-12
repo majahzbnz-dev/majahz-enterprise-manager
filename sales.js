@@ -102,10 +102,13 @@ document.getElementById("salesForm").addEventListener("submit", async function(e
 
     this.reset();
 
-    await displaySalesProducts();
-    await displaySalesHistory();
-    await displayProducts();
+   await displaySalesProducts();
+await displaySalesHistory();
+await displayProducts();
 
+if (typeof updateDashboard === "function") {
+  await updateDashboard();
+}
     alert(
       `Sale recorded successfully!\nRemaining stock: ${result.remainingStock} Mudu\nProfit: ₦${result.profit.toFixed(2)}`
     );
