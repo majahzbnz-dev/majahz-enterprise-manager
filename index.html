@@ -59,11 +59,45 @@
       <div class="card"><p>Outstanding</p><h3>₦0.00</h3></div>
     </div>
 
-    <div class="section">
-      <h3>Products & Stock</h3>
-      <p>Manage your poultry feed and agrovet products.</p>
-    </div>
-  </main>
+    
+<div class="section">
+  <h3>Products & Stock</h3>
+
+  <form id="productForm">
+    <label>Product Name</label>
+    <input id="productName" type="text" placeholder="e.g. Ultima Feed" required>
+
+    <label>Category</label>
+    <select id="productCategory">
+      <option value="Poultry Feed">Poultry Feed</option>
+      <option value="Veterinary Medicine">Veterinary Medicine</option>
+      <option value="Other">Other</option>
+    </select>
+
+    <label>Quantity</label>
+    <input id="productQuantity" type="number" min="0" step="any" required>
+
+    <label>Unit</label>
+    <select id="productUnit">
+      <option value="Bag">Bag</option>
+      <option value="Mudu">Mudu</option>
+      <option value="Bottle">Bottle</option>
+      <option value="Carton">Carton</option>
+      <option value="Piece">Piece</option>
+    </select>
+
+    <label>Cost Price (₦)</label>
+    <input id="productCost" type="number" min="0" required>
+
+    <label>Selling Price (₦)</label>
+    <input id="productSelling" type="number" min="0" required>
+
+    <button type="submit">Save Product</button>
+  </form>
+
+  <h3>Product List</h3>
+  <div id="productList">No products added yet.</div>
+</div>
 
   <script src="./database.js"></script>
   <script src="./products.js"></script>
