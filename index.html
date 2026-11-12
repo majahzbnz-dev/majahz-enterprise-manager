@@ -6,6 +6,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#123c2c">
+ <link rel="manifest" href="manifest.json">
   <title>MAJAHZ ENTERPRISE MANAGER</title>
   <style>
     * { box-sizing: border-box; }
@@ -93,5 +94,15 @@
     MAJAHZ ENTERPRISE MANAGER<br>
     Developed for MAJAHZ
   </footer>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./service-worker.js")
+      .then(() => console.log("MAJAHZ Offline Ready"))
+      .catch(error => console.error(error));
+
+  });
+}
+</script> 
 </body>
 </html>
