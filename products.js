@@ -24,3 +24,54 @@ async function getProducts() {
 async function removeProduct(id) {
   return deleteRecord("products", Number(id));
 }
+
+async function displayProducts() {
+  const products = await getProducts();
+  const list = document.getElementById("productList");
+
+  list.innerHTML = "";
+
+  if (products.length === 0) {
+    list.textContent = "No products added yet.";
+    return;
+  }
+
+  products.forEach((product) => {
+    const item = document.createElement("div");
+    item.style.padding = "10px";
+    item.style.borderBottom = "1px solid #ddd";
+
+    const name = document.createElement("strong");
+    name.textContent = product.name;
+
+    const details = document.createElement("p");
+    details.textContent =
+      `${product.quantity} ${product.unit} | Cost: ₦${product.costPrice} | Selling: ₦${product.sellingPrice}`;
+
+    item.append(name, details);
+    list.appendChild(item);
+  });
+}
+
+document.getElementById("productForm").addEventListener("submit", async function(event) {
+  event.preventDefault();
+
+  try {
+    await addProduct({
+      name: document.getElementById("productName").value,
+      category: document.getElementById("productCategory").value,
+      quantity: document.getElementById("productQuantity").value,
+      unit: document.getElementById("productUnit").value,
+      costPrice: document.getElementById("productCost").value,
+      sellingPrice: document.getElementById("productSelling").value
+    });
+
+    this.reset();
+    await displayProducts();
+    alert("Product saved successfully!");
+  } catch (error) {
+    alert("Error: " + error.message);
+  }
+});
+
+displayProducts();
