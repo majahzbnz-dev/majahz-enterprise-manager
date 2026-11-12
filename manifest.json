@@ -1,0 +1,12 @@
+
+{
+  "name": "MAJAHZ ENTERPRISE MANAGER",
+  "short_name": "MAJAHZ",
+  "description": "Offline Business Management System",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f2f5f2",
+  "theme_color": "#123c2c"
+}
