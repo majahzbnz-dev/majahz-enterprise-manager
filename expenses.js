@@ -51,8 +51,11 @@ document.getElementById("expenseForm").addEventListener(
 
       this.reset();
 
-      await displayExpenses();
+    await displayExpenses();
 
+if (typeof updateDashboard === "function") {
+  await updateDashboard();
+}
       alert("Expense recorded successfully!");
     } catch (error) {
       alert("Error: " + error.message);
