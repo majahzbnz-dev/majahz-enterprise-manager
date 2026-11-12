@@ -56,3 +56,63 @@ async function getSales() {
   return getAllRecords("sales");
 }
 
+async function displaySalesProducts() {
+  const products = await getProducts();
+  const select = document.getElementById("saleProduct");
+
+  select.innerHTML = '<option value="">Choose product</option>';
+
+  products.forEach((product) => {
+    const option = document.createElement("option");
+    option.value = product.id;
+    option.textContent = `${product.name} (${product.stockInMudu ?? product.quantity * (product.muduPerBag || 21)} Mudu)`;
+    select.appendChild(option);
+  });
+}
+
+async function displaySalesHistory() {
+  const sales = await getSales();
+  const list = document.getElementById("salesList");
+
+  list.innerHTML = "";
+
+  if (sales.length === 0) {
+    list.textContent = "No sales recorded yet.";
+    return;
+  }
+
+  sales.slice().reverse().forEach((sale) => {
+    const item = document.createElement("p");
+    item.textContent =
+      `${sale.productName} | ${sale.quantityMudu} Mudu | ` +
+      `₦${sale.saleAmount} | Profit: ₦${sale.profit.toFixed(2)}`;
+    list.appendChild(item);
+  });
+}
+
+document.getElementById("salesForm").addEventListener("submit", async function(event) {
+  event.preventDefault();
+
+  try {
+    const result = await recordSale(
+      document.getElementById("saleProduct").value,
+      document.getElementById("saleQuantityMudu").value,
+      document.getElementById("saleAmount").value
+    );
+
+    this.reset();
+
+    await displaySalesProducts();
+    await displaySalesHistory();
+    await displayProducts();
+
+    alert(
+      `Sale recorded successfully!\nRemaining stock: ${result.remainingStock} Mudu\nProfit: ₦${result.profit.toFixed(2)}`
+    );
+  } catch (error) {
+    alert("Error: " + error.message);
+  }
+});
+
+displaySalesProducts();
+displaySalesHistory();
