@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,6 +8,7 @@
   <meta name="theme-color" content="#123c2c">
   <link rel="manifest" href="manifest.json">
   <title>MAJAHZ ENTERPRISE MANAGER</title>
+
   <style>
     body {
       margin: 0;
@@ -14,167 +16,344 @@
       background: #f2f5f2;
       color: #18352a;
     }
+
     header {
       background: #123c2c;
       color: white;
       padding: 22px 16px;
     }
-    header h2 { margin: 0 0 6px; }
-    main { padding: 16px; }
+
+    header h2 {
+      margin: 0 0 6px;
+    }
+
+    main {
+      padding: 16px;
+    }
+
     .cards {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 12px;
     }
+
     .card {
       background: white;
       padding: 18px 12px;
       border-radius: 12px;
       box-shadow: 0 2px 7px #00000012;
     }
-    .card p { margin: 0 0 10px; color: #60756a; }
-    .card h3 { margin: 0; font-size: 20px; }
+
+    .card p {
+      margin: 0 0 10px;
+      color: #60756a;
+    }
+
+    .card h3 {
+      margin: 0;
+      font-size: 20px;
+    }
+
     .section {
       background: white;
       margin-top: 18px;
       padding: 16px;
       border-radius: 12px;
     }
+
+    label {
+      display: block;
+      margin-top: 12px;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input, select {
+      box-sizing: border-box;
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 7px;
+      font-size: 15px;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 12px 18px;
+      width: 100%;
+      border: none;
+      border-radius: 7px;
+      background: #123c2c;
+      color: white;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    hr {
+      margin: 22px 0;
+      border: 0;
+      border-top: 1px solid #ddd;
+    }
+
+    small {
+      display: block;
+      margin-top: 8px;
+      color: #60756a;
+    }
   </style>
 </head>
+
 <body>
+
   <header>
     <h2>MAJAHZ ENTERPRISE</h2>
     <p>Enterprise Manager Dashboard</p>
   </header>
 
   <main>
+
     <h3>Business Overview</h3>
+
     <div class="cards">
-    
-<div class="card">
-  <p>Total Money</p>
-  <h3 id="totalMoney">₦0.00</h3>
-</div>
 
-<div class="card">
-  <p>Products & Stock</p>
-  <h3 id="totalProducts">0</h3>
-  <small id="totalStock">0 Mudu</small>
-</div>
+      <div class="card">
+        <p>Total Money</p>
+        <h3 id="totalMoney">₦0.00</h3>
+      </div>
 
-<div class="card">
-  <p>Total Sales</p>
-  <h3 id="totalSales">₦0.00</h3>
-</div>
+      <div class="card">
+        <p>Products & Stock</p>
+        <h3 id="totalProducts">0</h3>
+        <small id="totalStock">0 Mudu</small>
+      </div>
 
-<div class="card">
-  <p>Profit</p>
-  <h3 id="totalProfit">₦0.00</h3>
-</div>
+      <div class="card">
+        <p>Total Sales</p>
+        <h3 id="totalSales">₦0.00</h3>
+      </div>
 
-<div class="card">
-  <p>Expenses</p>
-  <h3 id="totalExpenses">₦0.00</h3>
-</div>
+      <div class="card">
+        <p>Profit</p>
+        <h3 id="totalProfit">₦0.00</h3>
+      </div>
 
-<div class="card">
-  <p>Outstanding</p>
-  <h3 id="totalOutstanding">₦0.00</h3>
-</div>
-</div>
-    
-<div class="section">
-  <h3>Products & Stock</h3>
+      <div class="card">
+        <p>Expenses</p>
+        <h3 id="totalExpenses">₦0.00</h3>
+      </div>
 
-  <form id="productForm">
-    <label>Product Name</label>
-    <input id="productName" type="text" placeholder="e.g. Ultima Feed" required>
+      <div class="card">
+        <p>Outstanding</p>
+        <h3 id="totalOutstanding">₦0.00</h3>
+      </div>
 
-    <label>Category</label>
-    <select id="productCategory">
-      <option value="Poultry Feed">Poultry Feed</option>
-      <option value="Veterinary Medicine">Veterinary Medicine</option>
-      <option value="Other">Other</option>
-    </select>
+    </div>
 
-    <label>Quantity</label>
-    <input id="productQuantity" type="number" min="0" step="any" required>
+    <!-- PRODUCTS AND STOCK -->
 
-    <label>Unit</label>
-    <select id="productUnit">
-      <option value="Bag">Bag</option>
-      <option value="Mudu">Mudu</option>
-      <option value="Bottle">Bottle</option>
-      <option value="Carton">Carton</option>
-      <option value="Piece">Piece</option>
-    </select>
-    
-    <label>Mudu per Bag</label>
-<input id="muduPerBag" type="number" min="1" value="21" required>
-    
-    <label>Cost Price (₦)</label>
-    <input id="productCost" type="number" min="0" required>
-
-    <label>Selling Price (₦)</label>
-    <input id="productSelling" type="number" min="0" required>
-
-    <button type="submit">Save Product</button>
-  </form>
-
-  <h3>Product List</h3>
-  <div id="productList">No products added yet.</div>
-</div>
-<div class="section">
-  <h3>Sales</h3>
-
-  <form id="salesForm">
-    <label>Select Product</label>
-    <select id="saleProduct" required>
-      <option value="">Choose product</option>
-    </select>
-
-    <label>Quantity (Mudu)</label>
-    <input type="number" id="saleQuantityMudu" min="1" required>
-
-    <label>Total Sale Amount (₦)</label>
-    <input type="number" id="saleAmount" min="1" required>
-
-    <button type="submit">Record Sale</button>
-  </form>
-
-  <h4>Sales History</h4>
-  <div id="salesList"></div>
-</div>
-    
     <div class="section">
-  <h3>Purchases</h3>
+      <h3>Products & Stock</h3>
 
-  <form id="purchaseForm">
-    <label>Select Product</label>
-    <select id="purchaseProduct" required>
-      <option value="">Choose product</option>
-    </select>
+      <form id="productForm">
 
-    <label>Quantity Purchased (Bags)</label>
-    <input type="number" id="purchaseQuantity" min="0.01" step="any" required>
+        <label>Product Name</label>
+        <input id="productName" type="text"
+          placeholder="e.g. Ultima Feed" required>
 
-    <label>Total Purchase Cost (₦)</label>
-    <input type="number" id="purchaseCost" min="1" required>
+        <label>Category</label>
+        <select id="productCategory">
+          <option value="Poultry Feed">Poultry Feed</option>
+          <option value="Veterinary Medicine">Veterinary Medicine</option>
+          <option value="Other">Other</option>
+        </select>
 
-    <button type="submit">Record Purchase</button>
-  </form>
+        <label>Quantity</label>
+        <input id="productQuantity" type="number"
+          min="0" step="any" required>
 
-  <h4>Purchase History</h4>
-  <div id="purchaseList"></div>
-</div>
-    
- <script src="./database.js"></script>
-<script src="./products.js"></script>
-<script src="./sales.js"></script>
-<script src="./purchases.js"></script>  
-<script src="./expenses.js"></script>  
-<script src="./dashboard.js"></script>    
+        <label>Unit</label>
+        <select id="productUnit">
+          <option value="Bag">Bag</option>
+          <option value="Mudu">Mudu</option>
+          <option value="Bottle">Bottle</option>
+          <option value="Carton">Carton</option>
+          <option value="Piece">Piece</option>
+        </select>
+
+        <label>Mudu per Bag</label>
+        <input id="muduPerBag" type="number"
+          min="1" value="21" required>
+
+        <label>Cost Price (₦)</label>
+        <input id="productCost" type="number"
+          min="0" required>
+
+        <label>Selling Price (₦)</label>
+        <input id="productSelling" type="number"
+          min="0" required>
+
+        <button type="submit">Save Product</button>
+
+      </form>
+
+      <h3>Product List</h3>
+      <div id="productList">No products added yet.</div>
+    </div>
+
+    <!-- SALES -->
+
+    <div class="section">
+      <h3>Sales</h3>
+
+      <form id="salesForm">
+
+        <label>Select Product</label>
+        <select id="saleProduct" required>
+          <option value="">Choose product</option>
+        </select>
+
+        <label>Quantity (Mudu)</label>
+        <input type="number" id="saleQuantityMudu"
+          min="1" required>
+
+        <label>Total Sale Amount (₦)</label>
+        <input type="number" id="saleAmount"
+          min="1" required>
+
+        <button type="submit">Record Sale</button>
+
+      </form>
+
+      <h4>Sales History</h4>
+      <div id="salesList"></div>
+    </div>
+
+    <!-- PURCHASES -->
+
+    <div class="section">
+      <h3>Purchases</h3>
+
+      <form id="purchaseForm">
+
+        <label>Select Product</label>
+        <select id="purchaseProduct" required>
+          <option value="">Choose product</option>
+        </select>
+
+        <label>Quantity Purchased (Bags)</label>
+        <input type="number" id="purchaseQuantity"
+          min="0.01" step="any" required>
+
+        <label>Total Purchase Cost (₦)</label>
+        <input type="number" id="purchaseCost"
+          min="1" required>
+
+        <button type="submit">Record Purchase</button>
+
+      </form>
+
+      <h4>Purchase History</h4>
+      <div id="purchaseList"></div>
+    </div>
+
+    <!-- EXPENSES -->
+
+    <div class="section">
+      <h3>Expenses Management</h3>
+
+      <form id="expenseForm">
+
+        <label>Expense Category</label>
+        <select id="expenseCategory" required>
+          <option value="">Select category</option>
+          <option value="Transportation">Transportation</option>
+          <option value="Shop Rent">Shop Rent</option>
+          <option value="Electricity">Electricity</option>
+          <option value="Feeding">Feeding</option>
+          <option value="Maintenance">Maintenance</option>
+          <option value="Other">Other</option>
+        </select>
+
+        <label>Description</label>
+        <input type="text" id="expenseDescription"
+          placeholder="Enter expense description">
+
+        <label>Amount (₦)</label>
+        <input type="number" id="expenseAmount"
+          min="1" required>
+
+        <button type="submit">Save Expense</button>
+
+      </form>
+
+      <h4>Expense History</h4>
+      <div id="expenseList"></div>
+    </div>
+
+    <!-- CREDIT AND OUTSTANDING -->
+
+    <div class="section">
+      <h3>Credit & Outstanding Management</h3>
+
+      <h4>Record New Customer Debt</h4>
+
+      <form id="debtForm">
+
+        <label>Customer Name</label>
+        <input type="text" id="debtCustomerName"
+          placeholder="Enter customer name" required>
+
+        <label>Customer Phone</label>
+        <input type="tel" id="debtCustomerPhone"
+          placeholder="Enter phone number">
+
+        <label>Debt Amount (₦)</label>
+        <input type="number" id="debtAmount"
+          min="1" step="0.01" required>
+
+        <button type="submit">Save Customer Debt</button>
+
+      </form>
+
+      <hr>
+
+      <h4>Record Debt Payment</h4>
+
+      <form id="debtPaymentForm">
+
+        <label>Select Customer</label>
+        <select id="debtSelect" required>
+          <option value="">Select customer debt</option>
+        </select>
+
+        <label>Amount Paid (₦)</label>
+        <input type="number" id="debtPaymentAmount"
+          min="1" step="0.01" required>
+
+        <button type="submit">Record Payment</button>
+
+      </form>
+
+      <hr>
+
+      <h4>Customer Debt Records</h4>
+      <div id="debtList"></div>
+
+    </div>
+
+  </main>
+
+  <!-- APPLICATION SCRIPTS -->
+
+  <script src="./database.js"></script>
+  <script src="./products.js"></script>
+  <script src="./sales.js"></script>
+  <script src="./purchases.js"></script>
+  <script src="./expenses.js"></script>
+  <script src="./debts.js"></script>
+  <script src="./dashboard.js"></script>
+
   <script>
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => {
@@ -182,5 +361,6 @@
       });
     }
   </script>
+
 </body>
 </html>
