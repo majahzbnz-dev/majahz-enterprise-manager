@@ -1,5 +1,5 @@
 
-const CACHE_NAME = "majahz-enterprise-v7";
+const CACHE_NAME = "majahz-enterprise-v8";
 
 const FILES_TO_CACHE = [
  "./",
