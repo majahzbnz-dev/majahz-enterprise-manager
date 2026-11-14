@@ -1,4 +1,5 @@
 
+
 // MAJAHZ ENTERPRISE MANAGER
 // CREDIT & OUTSTANDING MANAGEMENT
 
@@ -10,18 +11,18 @@ async function addDebt(customerName, phone, amount) {
     throw new Error("Shigar da sunan kwastoma da adadin bashi mai inganci.");
   }
 
-  const debt = {
+  const now = new Date().toISOString();
+
+  return saveRecord("debts", {
     customerName: name,
     phone: String(phone || "").trim(),
     originalAmount: value,
     paidAmount: 0,
     balance: value,
     status: "Unpaid",
-    date: new Date().toISOString(),
-    updatedAt: new Date().toISOString()
-  };
-
-  return saveRecord("debts", debt);
+    date: now,
+    updatedAt: now
+  });
 }
 
 async function getDebts() {
@@ -50,9 +51,7 @@ async function recordDebtPayment(debtId, amount) {
     throw new Error("Kuɗin da aka biya ya fi ragowar bashi.");
   }
 
-  const newPaidAmount =
-    Number(debt.paidAmount || 0) + payment;
-
+  const newPaidAmount = Number(debt.paidAmount || 0) + payment;
   const newBalance = balance - payment;
 
   const updatedDebt = {
@@ -68,6 +67,11 @@ async function recordDebtPayment(debtId, amount) {
   return updatedDebt;
 }
 
+// DELETE DEBT RECORD
+async function removeDebt(id) {
+  return deleteRecord("debts", Number(id));
+}
+
 async function displayDebts() {
   const list = document.getElementById("debtList");
   const selector = document.getElementById("debtSelect");
@@ -79,7 +83,8 @@ async function displayDebts() {
   list.innerHTML = "";
 
   if (selector) {
-    selector.innerHTML = '<option value="">Select customer debt</option>';
+    selector.innerHTML =
+      '<option value="">Select customer debt</option>';
   }
 
   if (debts.length === 0) {
@@ -103,20 +108,54 @@ async function displayDebts() {
       `Balance: ₦${Number(debt.balance ?? debt.originalAmount ?? 0).toLocaleString()} | ` +
       `Status: ${debt.status || "Unpaid"}`;
 
-    item.append(name, details);
+    const deleteButton = document.createElement("button");
+    deleteButton.type = "button";
+    deleteButton.textContent = "Delete Debt";
+    deleteButton.style.background = "#b42318";
+    deleteButton.style.color = "#ffffff";
+    deleteButton.style.marginTop = "5px";
+
+    deleteButton.addEventListener("click", async () => {
+      const confirmed = confirm(
+        `Kana tabbatar kana son goge rikodin bashin ${debt.customerName}? Wannan aikin ba za a iya warware shi kai tsaye ba.`
+      );
+
+      if (!confirmed) return;
+
+      try {
+        await removeDebt(debt.id);
+        await displayDebts();
+
+        if (typeof updateDashboard === "function") {
+          await updateDashboard();
+        }
+
+        alert("An goge rikodin bashin.");
+      } catch (error) {
+        alert("Error: " + error.message);
+      }
+    });
+
+    item.append(name, details, deleteButton);
     list.appendChild(item);
 
-    if (selector && Number(debt.balance ?? debt.originalAmount) > 0) {
+    if (
+      selector &&
+      Number(debt.balance ?? debt.originalAmount) > 0
+    ) {
       const option = document.createElement("option");
       option.value = debt.id;
       option.textContent =
-        `${debt.customerName} - ₦${Number(debt.balance ?? debt.originalAmount).toLocaleString()}`;
+        `${debt.customerName} - ₦${Number(
+          debt.balance ?? debt.originalAmount
+        ).toLocaleString()}`;
+
       selector.appendChild(option);
     }
   });
 }
 
-// Add a new customer debt
+// ADD NEW DEBT
 const debtForm = document.getElementById("debtForm");
 
 if (debtForm) {
@@ -144,8 +183,9 @@ if (debtForm) {
   });
 }
 
-// Record a customer payment
-const debtPaymentForm = document.getElementById("debtPaymentForm");
+// RECORD DEBT PAYMENT
+const debtPaymentForm =
+  document.getElementById("debtPaymentForm");
 
 if (debtPaymentForm) {
   debtPaymentForm.addEventListener("submit", async function(event) {
