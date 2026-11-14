@@ -1,5 +1,5 @@
 
-const CACHE_NAME = "majahz-enterprise-v6";
+const CACHE_NAME = "majahz-enterprise-v7";
 
 const FILES_TO_CACHE = [
  "./",
@@ -10,7 +10,8 @@ const FILES_TO_CACHE = [
 "./sales.js",
 "./purchases.js",
 "./expenses.js",
-];
+"./debts.js",
+"./dashboard.js"];
 self.addEventListener("install", event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
