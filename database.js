@@ -1,6 +1,6 @@
 
 const DB_NAME = "MAJAHZ_ENTERPRISE_DB";
-const DB_VERSION = 1;
+const DB_VERSION = 2;
 
 const STORES = [
   "products",
@@ -8,7 +8,8 @@ const STORES = [
   "purchases",
   "expenses",
   "debts",
-  "deliveries"
+  "deliveries",
+  "transactions"
 ];
 
 function openDatabase() {
@@ -44,6 +45,8 @@ async function saveRecord(storeName, record) {
     request.onerror = () => reject(request.error);
 
     transaction.oncomplete = () => db.close();
+    transaction.onerror = () => db.close();
+    transaction.onabort = () => db.close();
   });
 }
 
@@ -58,6 +61,8 @@ async function getAllRecords(storeName) {
     request.onerror = () => reject(request.error);
 
     transaction.oncomplete = () => db.close();
+    transaction.onerror = () => db.close();
+    transaction.onabort = () => db.close();
   });
 }
 
@@ -72,5 +77,7 @@ async function deleteRecord(storeName, id) {
     request.onerror = () => reject(request.error);
 
     transaction.oncomplete = () => db.close();
+    transaction.onerror = () => db.close();
+    transaction.onabort = () => db.close();
   });
 }
