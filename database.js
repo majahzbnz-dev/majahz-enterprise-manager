@@ -1,6 +1,6 @@
 
 const DB_NAME = "MAJAHZ_ENTERPRISE_DB";
-const DB_VERSION = 2;
+const DB_VERSION = 3;
 
 const STORES = [
   "products",
@@ -9,7 +9,8 @@ const STORES = [
   "expenses",
   "debts",
   "deliveries",
-  "transactions"
+  "transactions",
+  "supplierDebts"
 ];
 
 function openDatabase() {
@@ -29,7 +30,16 @@ function openDatabase() {
       });
     };
 
-    request.onsuccess = () => resolve(request.result);
+    request.onsuccess = () => {
+      const db = request.result;
+
+      db.onversionchange = () => {
+        db.close();
+      };
+
+      resolve(db);
+    };
+
     request.onerror = () => reject(request.error);
   });
 }
@@ -45,8 +55,16 @@ async function saveRecord(storeName, record) {
     request.onerror = () => reject(request.error);
 
     transaction.oncomplete = () => db.close();
-    transaction.onerror = () => db.close();
-    transaction.onabort = () => db.close();
+
+    transaction.onerror = () => {
+      db.close();
+      reject(transaction.error);
+    };
+
+    transaction.onabort = () => {
+      db.close();
+      reject(transaction.error || new Error("Database transaction aborted."));
+    };
   });
 }
 
@@ -61,8 +79,16 @@ async function getAllRecords(storeName) {
     request.onerror = () => reject(request.error);
 
     transaction.oncomplete = () => db.close();
-    transaction.onerror = () => db.close();
-    transaction.onabort = () => db.close();
+
+    transaction.onerror = () => {
+      db.close();
+      reject(transaction.error);
+    };
+
+    transaction.onabort = () => {
+      db.close();
+      reject(transaction.error || new Error("Database transaction aborted."));
+    };
   });
 }
 
@@ -77,7 +103,15 @@ async function deleteRecord(storeName, id) {
     request.onerror = () => reject(request.error);
 
     transaction.oncomplete = () => db.close();
-    transaction.onerror = () => db.close();
-    transaction.onabort = () => db.close();
+
+    transaction.onerror = () => {
+      db.close();
+      reject(transaction.error);
+    };
+
+    transaction.onabort = () => {
+      db.close();
+      reject(transaction.error || new Error("Database transaction aborted."));
+    };
   });
 }
